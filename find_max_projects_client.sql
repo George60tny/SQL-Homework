@@ -1,0 +1,12 @@
+SELECT c.NAME, COUNT(p.ID) as PROJECT_COUNT
+FROM client c
+JOIN project p ON c.ID = p.CLIENT_ID
+GROUP BY c.ID
+HAVING COUNT(p.ID) = (
+    SELECT MAX(PROJECT_COUNT)
+    FROM (
+        SELECT COUNT(ID) as PROJECT_COUNT
+        FROM project
+        GROUP BY CLIENT_ID
+    )
+);
